@@ -1,10 +1,10 @@
-Request/Response Model Updates
+# Request/Response Model Updates
 
-PostPaymentResponse and GetPaymentResponse
+## PostPaymentResponse and GetPaymentResponse
 
 - Amount type was updated from int to decimal to return a representation of the current in a minior current unit. 
 
-PostPaymentRequest
+## PostPaymentRequest
 
 - CardNumber type was updated from int to long due to the limitation of 10 numbers for int types in comparison to long where 19 is the limit - perfect for this requirement.
 
@@ -12,12 +12,18 @@ PostPaymentRequest
 
 - JsonPropertyName was used to keep consistent with the JSON Format for BankSimulatorRequest. (optional)
 
-Repository Pattern
+# Controller Endpoints + Repository Pattern 
 
 <!-- TODO: WHY? -->
 
-Endpoints
+## Endpoints
 
 The GetPastPaymentById endpoint in a production product should ideally be protected and payment data should not be accessible by just the transacation Id - e.g. the use of API-KEY? JWT?
 
 The ProcessPaymentAsync when called will send the entire card number to the bank for authorisation. However when storing in list (ideally database), only the last 4 card numbers should be stored due to privacy concerns.
+
+# Helpers + Validation
+
+## Helpers 
+
+I chose to use GBP, USD and CNY currencies - two with the same conversions and one with different. 

@@ -16,6 +16,6 @@ public static class CurrencyHelper
 
     public static decimal MinorToMajorUnits(string currency, decimal minorAmount)
     {
-        return minorAmount / SupportedCurrenciesCodes.GetValueOrDefault(currency, 100);
+        return minorAmount / SupportedCurrenciesCodes[currency];
     }
 }
