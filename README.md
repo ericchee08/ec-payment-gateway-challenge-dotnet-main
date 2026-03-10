@@ -13,7 +13,7 @@
 
 ## Controller Endpoints + Repository Pattern
 
-
+<!-- TODO: Why? -->
 
 ### Endpoints
 
@@ -40,4 +40,14 @@ I've removed the rejected enum because I've designed the PostPaymentRequest endp
 ## Logging
 
 ### Serilog
+
+## Health Checks
+
+### Liveness check 
+
+I've added a simple health check endpoint which takes very little time to implement - although it's not part of the requirement it's more of a demonstration of understanding that it's useful for load balancers/orchestrators (like Openshift) to decide if an instance is live and what to do with the traffic.
+
+### Readiness check
+
+Another feature I've added, although not part of the requirement, is a readiness check for the bank simulator. While the Bank Simulator doesn't have a health endpoint, let's assume for this scenario that it does. This readiness check helps determine whether external dependencies like the bank simulator are available and ready to serve requests before traffic is routed to the application. These checks are useful in environments orchestrated by tools like OpenShift, ensuring that services only receive traffic when all required dependencies are operational.
 

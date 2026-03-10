@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using PaymentGateway.Api.HealthChecks;
 using PaymentGateway.Api.Services;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -21,6 +23,8 @@ builder.Services.AddHttpClient<IBankSimulatorClient, BankSimulatorClient>(client
 builder.Services.AddHttpClient("BankSimulator", client => client.BaseAddress = bankSimulatorUri);
 
 builder.Services.AddSingleton<IPaymentsRepository, PaymentsRepository>();
+builder.Services.AddHealthChecks()
+    .AddCheck<BankSimulatorHealthCheck>("bank_simulator", tags: new[] { "ready" });
 
 var app = builder.Build();
 
@@ -35,5 +39,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHealthChecks("/health", new HealthCheckOptions { Predicate = c => !c.Tags.Contains("ready") });
+app.MapHealthChecks("/health/ready", new HealthCheckOptions { Predicate = _ => true });
 
 app.Run();
