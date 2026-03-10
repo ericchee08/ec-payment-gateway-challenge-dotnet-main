@@ -8,7 +8,6 @@ using PaymentGateway.Api.Models.Responses;
 using PaymentGateway.Api.Services;
 using Moq;
 
-
 namespace PaymentGateway.Api.Tests;
 
 public class PaymentsControllerTests
@@ -107,7 +106,7 @@ public class PaymentsControllerTests
         // Act
         var result = controller.GetPastPaymentById(id);
 
-        // Assert (controller returns T directly, so Value is set)
+        // Assert
         var payment = Assert.IsType<GetPaymentResponse>(result.Value);
         Assert.Equal(id, payment.Id);
         Assert.Equal(PaymentStatus.Authorized, payment.Status);
@@ -144,7 +143,7 @@ public class PaymentsControllerTests
         // Act
         var result = controller.GetPastPaymentById(id);
 
-        // Assert (controller returns T directly, so Value is set)
+        // Assert
         var payment = Assert.IsType<GetPaymentResponse>(result.Value);
         Assert.Equal(id, payment.Id);
         Assert.Equal(PaymentStatus.Declined, payment.Status);

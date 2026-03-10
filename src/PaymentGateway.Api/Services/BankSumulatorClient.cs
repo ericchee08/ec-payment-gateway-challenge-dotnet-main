@@ -18,7 +18,6 @@ public class BankSimulatorClient : IBankSimulatorClient
 
     public async Task<BankSimulatorResponse> ProcessPaymentAsync(PostPaymentRequest request, CancellationToken cancellationToken = default)
     {
-
         var bankRequest = MapToBankRequest(request);
         var response = await _httpClient.PostAsJsonAsync(PaymentsPath, bankRequest, cancellationToken);
 
