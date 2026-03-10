@@ -3,6 +3,7 @@
 ## PostPaymentResponse and GetPaymentResponse
 
 - Amount type was updated from int to decimal to return a representation of the current in a minior current unit. 
+- Although PostPaymentResponse and GetPaymentResponse have the same structure, I chose to keep them as separate models. This makes it clearer which model is used for each endpoint and improves readability.
 
 ## PostPaymentRequest
 
