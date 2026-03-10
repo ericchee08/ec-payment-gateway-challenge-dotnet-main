@@ -7,7 +7,7 @@
 
 2. **Run the Payment Gateway API**
 
-3. **Check the API documentation**
+3. **Check the API swagger documentation**
 
    Go to [http://localhost:7092/swagger](http://localhost:7092/swagger)  
    This provides interactive documentation for testing endpoints.
