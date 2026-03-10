@@ -1,6 +1,7 @@
 ﻿using PaymentGateway.Api.Models.Responses;
 using PaymentGateway.Api.Models.Requests;
 using PaymentGateway.Api.Enums;
+using PaymentGateway.Api.Helpers;
 
 namespace PaymentGateway.Api.Services;
 
@@ -55,7 +56,7 @@ public class PaymentsRepository : IPaymentsRepository
             ExpiryMonth = request.ExpiryMonth,
             ExpiryYear = request.ExpiryYear,
             Currency = request.Currency,
-            Amount = request.Amount
+            Amount = CurrencyHelper.MinorToMajorUnits(request.Currency, request.Amount)
         };
     }
 
