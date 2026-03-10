@@ -61,8 +61,6 @@ public class PostPaymentRequestValidator : AbstractValidator<PostPaymentRequest>
 
     private static bool IsExpiryAfterCurrentDate(int month, int year)
     {
-        if (month is < 1 or > 12) return true; 
-        if (year < 1 || year > 9999) return true; 
         var today = DateTime.UtcNow;
         var expiryStart = new DateTime(year, month, 1);
         var currentMonthStart = new DateTime(today.Year, today.Month, 1);

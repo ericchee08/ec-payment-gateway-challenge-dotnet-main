@@ -37,7 +37,7 @@ public class PaymentsRepository : IPaymentsRepository
         return response;
     }
 
-    public GetPaymentResponse? GetPastPaymentById(Guid id)    // Ideally the merchant should have an API-Key to access this endpoint
+    public GetPaymentResponse? GetPastPaymentById(Guid id)
     {
         var payment = _payments.FirstOrDefault(payment => payment.Id == id);
 
