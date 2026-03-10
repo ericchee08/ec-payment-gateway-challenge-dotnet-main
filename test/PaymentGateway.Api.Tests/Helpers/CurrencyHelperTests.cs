@@ -1,3 +1,5 @@
+using PaymentGateway.Api.Helpers;
+
 namespace PaymentGateway.Api.Tests.Helpers;
 
 public class CurrencyHelperTests
