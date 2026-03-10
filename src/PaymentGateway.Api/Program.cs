@@ -9,6 +9,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+var bankSimulatorBaseAddress = builder.Configuration["BankSimulator:BaseAddress"] ?? "http://localhost:8080";
+var bankSimulatorUri = new Uri(bankSimulatorBaseAddress);
+builder.Services.AddHttpClient<IBankSimulatorClient, BankSimulatorClient>(client =>
+{
+    client.BaseAddress = bankSimulatorUri;
+});
+builder.Services.AddHttpClient("BankSimulator", client => client.BaseAddress = bankSimulatorUri);
+
 builder.Services.AddSingleton<PaymentsRepository>();
 
 var app = builder.Build();
