@@ -19,3 +19,5 @@ Repository Pattern
 Endpoints
 
 The GetPastPaymentById endpoint in a production product should ideally be protected and payment data should not be accessible by just the transacation Id - e.g. the use of API-KEY? JWT?
+
+The ProcessPaymentAsync when called will send the entire card number to the bank for authorisation. However when storing in list (ideally database), only the last 4 card numbers should be stored due to privacy concerns.
