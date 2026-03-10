@@ -1,10 +1,18 @@
 ﻿using PaymentGateway.Api.Models.Responses;
+using PaymentGateway.Api.Models.Requests;
 using PaymentGateway.Api.Enums;
 
 namespace PaymentGateway.Api.Services;
 
 public class PaymentsRepository : IPaymentsRepository
 {
+    private readonly IBankSimulatorClient _bankSimulatorClient;
+
+    public PaymentsRepository(IBankSimulatorClient bankSimulatorClient)
+    {
+        _bankSimulatorClient = bankSimulatorClient;
+    }
+
     private readonly List<PostPaymentResponse> _payments = [
         new PostPaymentResponse
         {
@@ -18,10 +26,15 @@ public class PaymentsRepository : IPaymentsRepository
         }
     ]; 
 
-    // public void Add(PostPaymentResponse payment)
-    // {
-    //     Payments.Add(payment);
-    // }
+    public async Task<PostPaymentResponse> ProcessPaymentAsync(PostPaymentRequest request, CancellationToken cancellationToken)
+    {
+        var bankResponse = await _bankSimulatorClient.ProcessPaymentAsync(request, cancellationToken);
+        
+        var response = BuildPaymentResponse(request, authorized: bankResponse.Authorized);
+        _payments.Add(response); 
+
+        return response;
+    }
 
     public async Task<GetPaymentResponse?> GetPastPaymentById(Guid id)
     {
@@ -30,9 +43,25 @@ public class PaymentsRepository : IPaymentsRepository
         return payment == null ? null : await GetPaymentResponse(payment);
     }
 
-    private static async Task<GetPaymentResponse> GetPaymentResponse(PostPaymentResponse payment)
+    private static PostPaymentResponse BuildPaymentResponse(PostPaymentRequest request, bool authorized)
     {
-        return await Task.FromResult(new GetPaymentResponse
+        var lastFourNumbersOfCardNumber = int.Parse(request.CardNumber.ToString()[^4..]);
+        
+        return new PostPaymentResponse
+        {
+            Id = Guid.NewGuid(),
+            Status = authorized ? PaymentStatus.Authorized : PaymentStatus.Declined,
+            CardNumberLastFour = lastFourNumbersOfCardNumber,
+            ExpiryMonth = request.ExpiryMonth,
+            ExpiryYear = request.ExpiryYear,
+            Currency = request.Currency,
+            Amount = request.Amount
+        };
+    }
+
+    private static Task<GetPaymentResponse> GetPaymentResponse(PostPaymentResponse payment)
+    {
+        return Task.FromResult(new GetPaymentResponse
         {
             Id = payment.Id,
             Status = payment.Status,

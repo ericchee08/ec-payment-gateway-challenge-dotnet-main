@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 using PaymentGateway.Api.Models.Responses;
+using PaymentGateway.Api.Models.Requests;
 using PaymentGateway.Api.Services;
 
 namespace PaymentGateway.Api.Controllers;
@@ -16,6 +17,12 @@ public class PaymentsController : Controller
     {
         _paymentsRepository = paymentsRepository;
         _logger = logger;
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<PostPaymentResponse>> ProcessPaymentAsync(PostPaymentRequest request, CancellationToken cancellationToken)
+    {
+        return await _paymentsRepository.ProcessPaymentAsync(request, cancellationToken);
     }
 
     [HttpGet("{id:guid}")]
