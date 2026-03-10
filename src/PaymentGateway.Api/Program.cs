@@ -17,7 +17,7 @@ builder.Services.AddHttpClient<IBankSimulatorClient, BankSimulatorClient>(client
 });
 builder.Services.AddHttpClient("BankSimulator", client => client.BaseAddress = bankSimulatorUri);
 
-builder.Services.AddSingleton<PaymentsRepository>();
+builder.Services.AddSingleton<IPaymentsRepository, PaymentsRepository>();
 
 var app = builder.Build();
 

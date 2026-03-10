@@ -1,5 +1,6 @@
 ﻿namespace PaymentGateway.Api.Models.Responses;
 
+using PaymentGateway.Api.Enums;
 public class GetPaymentResponse
 {
     public Guid Id { get; set; }

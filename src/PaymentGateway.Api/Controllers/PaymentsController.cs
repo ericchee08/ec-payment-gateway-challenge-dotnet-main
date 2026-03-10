@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 using PaymentGateway.Api.Models.Responses;
 using PaymentGateway.Api.Services;
@@ -9,18 +9,25 @@ namespace PaymentGateway.Api.Controllers;
 [ApiController]
 public class PaymentsController : Controller
 {
-    private readonly PaymentsRepository _paymentsRepository;
+    private readonly IPaymentsRepository _paymentsRepository;
+    private readonly ILogger<PaymentsController> _logger;
 
-    public PaymentsController(PaymentsRepository paymentsRepository)
+    public PaymentsController(IPaymentsRepository paymentsRepository, ILogger<PaymentsController> logger)
     {
         _paymentsRepository = paymentsRepository;
+        _logger = logger;
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<PostPaymentResponse?>> GetPaymentAsync(Guid id)
+    public async Task<ActionResult<GetPaymentResponse>> GetPastPaymentById(Guid id)
     {
-        var payment = _paymentsRepository.Get(id);
+        var payment = await _paymentsRepository.GetPastPaymentById(id);
+        if (payment == null)
+        {
+            _logger.LogWarning("Payment not found. PaymentId: {PaymentId}, TraceId: {TraceId}", id, HttpContext.TraceIdentifier);
+            return NotFound();
+        }
 
-        return new OkObjectResult(payment);
+        return payment;
     }
 }
