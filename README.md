@@ -24,6 +24,18 @@ The ProcessPaymentAsync when called will send the entire card number to the bank
 
 # Helpers + Validation
 
-## Helpers 
+## Helpers: CurrencyHelper
 
 I chose to use GBP, USD and CNY currencies - two with the same conversions and one with different. 
+
+## Validators: Fluent Validation
+
+I've used FluentValidation because it gives you clear, testable validation that stays out of models + controllers. I can have them in one place and test them like normal methods by just calling ValidRequest().
+
+The error/validation output is also well structured and I am able to use methods from CurrencyHelper to check supported currencies and IsExpiryAfterCurrentDate to consolidate the ExpiryMonth and ExpiryYear in ExpiryDate.
+
+## Removal of Rejected enum
+
+I've removed the rejected enum because I've designed the PostPaymentRequest endpoint to reject any invalid input via Validation - it's treated as a client error therefore does not create any payment record and does not call the bank simulator. Thinking of it from a security perspective - we shouldn't allow anything into the system that is Invalid. 
+
+
