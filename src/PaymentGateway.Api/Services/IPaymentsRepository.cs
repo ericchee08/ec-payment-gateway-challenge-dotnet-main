@@ -6,5 +6,5 @@ namespace PaymentGateway.Api.Services;
 public interface IPaymentsRepository
 {
     Task<PostPaymentResponse> ProcessPaymentAsync(PostPaymentRequest request, CancellationToken cancellationToken);
-    Task<GetPaymentResponse?> GetPastPaymentById(Guid id);
+    GetPaymentResponse? GetPastPaymentById(Guid id);
 }

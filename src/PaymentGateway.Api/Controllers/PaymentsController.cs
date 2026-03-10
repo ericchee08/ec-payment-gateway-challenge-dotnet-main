@@ -26,9 +26,9 @@ public class PaymentsController : Controller
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<GetPaymentResponse>> GetPastPaymentById(Guid id)
+    public ActionResult<GetPaymentResponse> GetPastPaymentById(Guid id)
     {
-        var payment = await _paymentsRepository.GetPastPaymentById(id);
+        var payment = _paymentsRepository.GetPastPaymentById(id);
         if (payment == null)
         {
             _logger.LogWarning("Payment not found. PaymentId: {PaymentId}, TraceId: {TraceId}", id, HttpContext.TraceIdentifier);

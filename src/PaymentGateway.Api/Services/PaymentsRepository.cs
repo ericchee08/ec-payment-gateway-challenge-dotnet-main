@@ -37,11 +37,11 @@ public class PaymentsRepository : IPaymentsRepository
         return response;
     }
 
-    public async Task<GetPaymentResponse?> GetPastPaymentById(Guid id)
+    public GetPaymentResponse? GetPastPaymentById(Guid id)    // Ideally the merchant should have an API-Key to access this endpoint
     {
         var payment = _payments.FirstOrDefault(payment => payment.Id == id);
 
-        return payment == null ? null : await GetPaymentResponse(payment);
+        return payment == null ? null : GetPaymentResponse(payment);
     }
 
     private static PostPaymentResponse BuildPaymentResponse(PostPaymentRequest request, bool authorized)
@@ -60,9 +60,9 @@ public class PaymentsRepository : IPaymentsRepository
         };
     }
 
-    private static Task<GetPaymentResponse> GetPaymentResponse(PostPaymentResponse payment)
+    private static GetPaymentResponse GetPaymentResponse(PostPaymentResponse payment) 
     {
-        return Task.FromResult(new GetPaymentResponse
+        return new GetPaymentResponse
         {
             Id = payment.Id,
             Status = payment.Status,
@@ -71,6 +71,6 @@ public class PaymentsRepository : IPaymentsRepository
             ExpiryYear = payment.ExpiryYear,
             Currency = payment.Currency,
             Amount = payment.Amount
-        });
+        };
     }
 }
